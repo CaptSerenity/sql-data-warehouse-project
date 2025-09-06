@@ -18,143 +18,126 @@ Usage Example:
 =====================================================================================
 */
 
-CREATE OR ALTER PROCEDURE bronze.load_bronze AS 
+CREATE OR ALTER PROCEDURE bronze.load_bronze AS
 BEGIN
-	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_time_start DATETIME, @batch_time_end DATETIME
+	
+	DECLARE @start_time DATETIME, @end_time DATETIME, @batch_start_time DATETIME, @batch_end_time DATETIME;
 	BEGIN TRY
-		/*
-		 Practicing Full Load to refresh and load the table 
-		*/
-		SET @batch_time_start = GETDATE();
-		Print'==============================';
-		Print 'Loading Bronze Layer';
-		Print'==============================';
+		SET @batch_start_time = GETDATE();
+		PRINT '==========================================================================='
+		PRINT ' Loading Bronze Layer'
+		PRINT '==========================================================================='
 
-		Print '--------------------------';
-		Print 'Loading CRM Tables';
-		Print '--------------------------';
-
+		PRINT '----------------------------------------------------------------------------';
+		PRINT 'Loading CRM Tables'
+		PRINT '----------------------------------------------------------------------------';
 
 		SET @start_time = GETDATE();
-		Print '>>Truncating Table:  bronze.crm_cust_info';
-		TRUNCATE TABLE bronze.crm_cust_info
+		PRINT '>> Truncating Table: bronze.crm_cust_info';
+		TRUNCATE table bronze.crm_cust_info;
 
-		Print '>>Inserting Data Into:  bronze.crm_cust_info';
+		PRINT '>> Inserting data: bronze.crm_cust_info';
 		BULK INSERT bronze.crm_cust_info
-		FROM 'E:\Python\DataWarehouse proj\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
+		FROM 'C:\Users\cbenj\OneDrive\Desktop\Portfolio\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\cust_info.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
 		SET @end_time = GETDATE();
-		PRINT '>> LOAD DURATION: '+ CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-		PRINT '----------------------';
-
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 
 		SET @start_time = GETDATE();
-		Print '>>Truncating Table:  bronze.crm_prd_info';
-		TRUNCATE TABLE bronze.crm_prd_info
+		PRINT '>> Truncating Table: bronze.crm_prd_info';
+		TRUNCATE TABLE bronze.crm_prd_info;
 
-		Print '>>Inserting Data Into:  bronze.crm_prd_info';
+		PRINT '>> Inserting data: bronze.crm_prd_info';
 		BULK INSERT bronze.crm_prd_info
-		FROM 'E:\Python\DataWarehouse proj\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
+		FROM 'C:\Users\cbenj\OneDrive\Desktop\Portfolio\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\prd_info.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
 		SET @end_time = GETDATE();
-		PRINT '>> LOAD DURATION: '+ CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-		PRINT '----------------------';
-
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 
 		SET @start_time = GETDATE();
-		Print '>>Truncating Table:  bronze.crm_sales_details';
-		TRUNCATE TABLE bronze.crm_sales_details
+		PRINT '>> Truncating Table: bronze.crm_sales_details';
+		TRUNCATE TABLE bronze.crm_sales_details;
 
-		Print '>>Inserting Data Into:  bronze.crm_sales_details';
+		PRINT '>> Inserting data: bronze.crm_sales_details';
 		BULK INSERT bronze.crm_sales_details
-		FROM 'E:\Python\DataWarehouse proj\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
+		FROM 'C:\Users\cbenj\OneDrive\Desktop\Portfolio\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_crm\sales_details.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
 		SET @end_time = GETDATE();
-		PRINT '>> LOAD DURATION: '+ CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-		PRINT '----------------------';
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 
-
-		Print '--------------------------';
-		Print 'Loading ERP Tables';
-		Print '--------------------------';
-
+		PRINT'----------------------------------------------------------------------------';
+		PRINT 'Loading ERP Tables'
+		PRINT'----------------------------------------------------------------------------';
 
 		SET @start_time = GETDATE();
-		Print '>>Truncating Table:  bronze.erp_loc_a101';
-		TRUNCATE TABle bronze.erp_loc_a101
+		PRINT '>> Truncating Table: bronze.erp_cust_az12';
+		TRUNCATE TABLE bronze.erp_cust_az12;
 
-		Print '>>Inserting Data Into:  bronze.erp_loc_a101';
-		BULK INSERT bronze.erp_loc_a101
-		FROM 'E:\Python\DataWarehouse proj\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\loc_a101.csv'
-		WITH (
-			FIRSTROW = 2,
-			FIELDTERMINATOR = ',',
-			TABLOCK
-		);
-		SET @end_time = GETDATE();
-		PRINT '>> LOAD DURATION: '+ CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-		PRINT '----------------------';
-
-
-
-		SET @start_time = GETDATE();
-		Print '>>Truncating Table:  bronze.erp_cust_az12';
-		TRUNCATE TABLE bronze.erp_cust_az12
-
-		Print '>>Inserting Data Into:  bronze.erp_cust_az12';
+		PRINT '>> Inserting data: bronze.erp_cust_az12';
 		BULK INSERT bronze.erp_cust_az12
-		FROM 'E:\Python\DataWarehouse proj\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\cust_az12.csv'
+		FROM 'C:\Users\cbenj\OneDrive\Desktop\Portfolio\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\cust_az12.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
 		SET @end_time = GETDATE();
-		PRINT '>> LOAD DURATION: '+ CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-		PRINT '----------------------';
-
-
+		PRINT '>> Load Duration ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 
 		SET @start_time = GETDATE();
-		Print '>>Truncating Table:  bronze.erm_px_cat_g1v2';
-		TRUNCATE TABLE bronze.erm_px_cat_g1v2
+		PRINT '>> Truncating Table: bronze.erp_loc_a101';
+		TRUNCATE TABLE bronze.erp_loc_a101;
 
-		Print '>>Inserting Data Into: bronze.erp_px_cat_g1v2';
-		BULK INSERT bronze.erp_px_cat_g1v2
-		FROM 'E:\Python\DataWarehouse proj\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\px_cat_g1v2.csv'
+		PRINT 'Inserting data: bronze.erp_loc_a101';
+		BULK INSERT bronze.erp_loc_a101
+		FROM 'C:\Users\cbenj\OneDrive\Desktop\Portfolio\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\loc_a101.csv'
 		WITH (
 			FIRSTROW = 2,
 			FIELDTERMINATOR = ',',
 			TABLOCK
 		);
 		SET @end_time = GETDATE();
-		PRINT '>> LOAD DURATION: '+ CAST (DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
-		PRINT '----------------------';
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
 
-		SET @batch_time_end = GETDATE();
-		PRINT '=======================================';
-		PRINT ' Loading Bronze Layer is Completed';
-		PRINT '>>  Total Load Duration: ' + CAST(DATEDIFF(second, @batch_time_start, @batch_time_end) AS NVARCHAR) + ' seconds';
-		PRINT '=======================================';
+		SET @start_time = GETDATE();
+		PRINT '>> Truncating Table: bronze.erp_px_cat_g1v2';
+		TRUNCATE TABLE bronze.erp_px_cat_g1v2;
+
+		PRINT 'Inserting data: bronze.erp_px_cat_g1v2';
+		BULK INSERT bronze.erp_px_cat_g1v2
+		FROM 'C:\Users\cbenj\OneDrive\Desktop\Portfolio\Data Warehouse\sql-data-warehouse-project\sql-data-warehouse-project\datasets\source_erp\px_cat_g1v2.csv'
+		WITH (
+			FIRSTROW = 2,
+			FIELDTERMINATOR = ',',
+			TABLOCK
+		);
+		SET @end_time = GETDATE();
+		PRINT '>> Load Duration: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' seconds';
+
+		SET @batch_end_time = GETDATE();
+		PRINT '========================================================================';
+		PRINT ' Loading Bronze Layer Completed';
+		PRINT ' Total Duration of Load: ' + CAST(DATEDIFF(second, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' seconds';
+		PRINT '========================================================================';
 	END TRY
 	BEGIN CATCH
-		PRINT '======================='
-		PRINT 'ERROR OCCURED DURING LOAD BRONZE LAYER';
-		PRINT 'Error Message' + ERROR_MESSAGE();
-		PRINT 'Error Message' + CAST (ERROR_NUMBER() AS NVARCHAR);
-		PRINT 'Error Message' + CAST (ERROR_STATE() AS NVARCHAR);
-		PRINT '=======================';
+		PRINT '========================================================';
+		PRINT 'ERROR OCCURED DURING LOADING BRONZE LAYER';
+		PRINT 'ERROR MESSAGE ' + ERROR_MESSAGE();
+		PRINT 'ERROR NUMBER ' + CAST(ERROR_NUMBER() AS NVARCHAR);
+		PRINT 'ERROR STATE ' + CAST (ERROR_STATE() AS NVARCHAR);
+		PRINT '========================================================';
 	END CATCH
 END
